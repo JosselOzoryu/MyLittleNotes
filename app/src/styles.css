@@ -1,0 +1,98 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  color: black;
+}
+input,
+textarea {
+  outline: none;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #d0dfe8;
+}
+h1 {
+  margin-top: 0;
+  font-weight: 500;
+}
+form {
+  position: relative;
+  width: 80%;
+  border-radius: 30px;
+  background: #EFCD60;
+}
+
+.circle-decoration {
+  content: "";
+  top: 100px;
+  right: 0;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background: red;
+}
+.delete-note {
+  content: "";
+  top: 0px;
+  right: 0;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  background: #B50E0E;
+}
+.sync-note:hover {
+  background: red;
+}
+.form-inner {
+  padding: 40px;
+}
+.form-inner input,
+.form-inner textarea {
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background: none;
+}
+.form-inner textarea {
+  resize: none;
+}
+.sync-button{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  border-radius: 20px;
+  border: none;
+  border-bottom: 4px solid #261ea1;
+  background: #333972;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+}
+.sync-button:hover {
+  background: #261ea1;
+}
+@media (min-width: 568px) {
+  form {
+    width: 60%;
+  }
+}

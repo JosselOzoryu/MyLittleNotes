@@ -1,5 +1,18 @@
 const router = require("express").Router();
 const notes = require("./notes");
+var mysql = require("mysql");
+
+//Database connection
+app.use(function(req, res, next) {
+  res.locals.connection = mysql.createConnection({
+    host: "localhost",
+    user: "MyLittleNotes",
+    password: "12345",
+    database: "my-little-notes"
+  });
+  res.locals.connect();
+  next();
+});
 
 let counter = 1;
 
@@ -17,7 +30,7 @@ router
     };
     notes.push(note);
     counter++;
-    res.status(201).json({ response: "note created" });
+    res.status(201).json({ response: "note created", id: counter });
   })
 
   .put("/:id", (req, res) => {
