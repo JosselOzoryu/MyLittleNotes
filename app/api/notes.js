@@ -1,7 +1,9 @@
+const uuid = require("uuid/v1");
+
 module.exports = [
     {
-        id: "0",
+        id: uuid(),
         title: 'note 1',
         body: 'first note'
-    }
+    },
 ]

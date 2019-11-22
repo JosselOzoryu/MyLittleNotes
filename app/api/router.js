@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const notes = require("./notes");
-
-let counter = 1;
+const uuid = require("uuid/v1");
 
 // router.get('/', function(req, res, next) {
 // 	res.locals.connection.query('SELECT * from notes', function (error, results, fields) {
@@ -18,13 +17,12 @@ router
   .post("/", (req, res) => {
     const { title, body } = req.body;
     const note = {
-      id: counter,
+      id: uuid(),
       title: title,
       body: body
     };
     notes.push(note);
-    counter++;
-    res.status(201).json({ response: "note created", id: counter });
+    res.status(201).json({ response: "note created", note: note});
   })
 
   .put("/:id", (req, res) => {
