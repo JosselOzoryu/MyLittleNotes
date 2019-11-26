@@ -22,6 +22,7 @@ DBconection.connect(function(err) {
   console.log("Connected to Database!");
 });
 
+
 router
   .get("/", (req, res) => {
     res.status(200).json(notes);
@@ -37,6 +38,7 @@ router
     notes.push(note);
     res.status(201).json({ response: "NOTE CREATED", note: note});
   })
+  // TODO ERRORPOST
 
   .put("/:id", (req, res) => {
     const { title, body } = req.body;
