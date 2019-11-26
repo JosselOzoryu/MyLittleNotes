@@ -1,4 +1,6 @@
 window.addEventListener("load", () => {
+  window.addEventListener('online', ()=> console.log('We are online'))
+  window.addEventListener('offline', ()=> console.log('We are offline'))
   const notesForm = document.querySelector(".notesForm");
   const addNoteButton = document.querySelector(".add-note");
   const makeNote = note => `
@@ -73,10 +75,10 @@ window.addEventListener("load", () => {
   }
 });
 
-window.onload = () => {
-  "use strict";
+// window.onload = () => {
+//   "use strict";
 
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./serviceWorker.js");
-  }
-};
+//   if ("serviceWorker" in navigator) {
+//     navigator.serviceWorker.register("./serviceWorker.js");
+//   }
+// };

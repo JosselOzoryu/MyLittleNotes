@@ -10,6 +10,7 @@ const mysql = require('mysql');
 // 	});
 // });
 
+//TODO SDK
 const DBconection = mysql.createConnection({
   host: "localhost",
   databse: "my-little-notes",
@@ -22,7 +23,7 @@ DBconection.connect(function(err) {
   console.log("Connected to Database!");
 });
 
-
+//TODO ROUTER
 router
   .get("/", (req, res) => {
     res.status(200).json(notes);

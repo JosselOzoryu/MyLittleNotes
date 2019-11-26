@@ -15,6 +15,14 @@
     </div>
     <div class="notesForm"></div>
     <script src="main.js"></script>
-    <!-- <script  src="serviceWroker.js"></script>  -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./serviceWorker.js', {scope:'./'})
+            .then(()=> {console.log('ServiceWorker registered')})
+            .catch(() => {console.log ('Service Worker unregistered')})
+        })
+      }
+    </script>
   </body>
 </html>
