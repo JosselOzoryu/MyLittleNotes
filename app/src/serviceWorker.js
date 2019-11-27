@@ -21,12 +21,12 @@ self.addEventListener("fetch", e => {
   }
 });
 
-const cacheFirst = req => {
+const cache = req => {
   const cacheResponse = caches.match(req);
   return cacheResponse || fetch(req);
 };
 
-const networkFirst = async req => {
+const network = async req => {
   const cache = await caches.open("dynamic-cache");
   try {
     //TODO catch the error from fetch
