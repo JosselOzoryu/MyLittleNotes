@@ -7,7 +7,7 @@ window.addEventListener("load", () => {
   <form name="" action="/">
         <button class="delete-note" id="btn-${note.id}">X</button>
         <div class="form-inner">
-          <input type="text" id="title-${note.id}" value="${note.title}"></input>
+          <input placeholder="Note title" type="text" id="title-${note.id}" value="${note.title}"></input>
           <textarea placeholder="Write your note here..." id="body-${note.id}"
             rows="5"
           >${note.body}</textarea>
@@ -64,39 +64,51 @@ window.addEventListener("load", () => {
   //Server petitions
 
   async function get() {
-    const response = await fetch("http://localhost:8080/api/notes");
-    const notes = await response.json();
-    return notes;
+      const response = await fetch("http://localhost:8080/api/notes");
+      const notes = await response.json();
+      return notes;
   }
 
   async function post() {
-    const response = await fetch("http://localhost:8080/api/notes", {
-      body: JSON.stringify({
-        title: "",
-        body: ""
-      }),
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = await response.json();
-    console.log(data);
-    return data;
+    if (navigator.onLine) {
+      const response = await fetch("http://localhost:8080/api/notes", {
+        body: JSON.stringify({
+          title: "",
+          body: ""
+        }),
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      console.log("Offline");
+    }
   }
 
   async function put(data, id) {
-    const response = await fetch(`http://localhost:8080/api/notes/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    return response;
+    if (navigator.onLine) {
+      const response = await fetch(`http://localhost:8080/api/notes/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      return response;
+    } else {
+      console.log("Offline");
+    }
   }
 
   async function deleteFromServer(id) {
-    await fetch(`http://localhost:8080/api/notes/${id}`, {
-      method: "DELETE"
-    });
+    if (navigator.onLine) {
+      await fetch(`http://localhost:8080/api/notes/${id}`, {
+        method: "DELETE"
+      });
+    } else {
+      localStorage.setItem(`req`)
+    }
   }
 });
