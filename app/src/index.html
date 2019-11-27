@@ -9,21 +9,20 @@
     />
   </head>
   <body>
-    <h1>My Little Notes</h1>
-    <!--<button class="sync-button" type="submit">Sync notes</button>-->
-    <button class="add-note" onclick="">+</button>
-    <form name="" action="/">
-      <!--<div class="circle-decoration"></div>-->
-      <button class="delete-note">X</button>
-      <div class="form-inner">
-        <input type="text" placeholder="Your note title" />
-        <textarea
-          placeholder="Start writing your note here..."
-          rows="5"
-        ></textarea>
-      </div>
-    </form>
-    <script src="main.js" src="serviceWroker.js"></script>
-
+    <div>
+      <h1>My Little Notes</h1>
+      <button class="add-note">+</button>
+    </div>
+    <div class="notesForm"></div>
+    <script src="main.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./serviceWorker.js', {scope:'./'})
+            .then(()=> {console.log('ServiceWorker registered')})
+            .catch(() => {console.log ('Service Worker unregistered')})
+        })
+      }
+    </script>
   </body>
 </html>

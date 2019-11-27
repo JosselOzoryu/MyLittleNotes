@@ -1,70 +1,52 @@
 const router = require("express").Router();
-const notes = require("./notes");
-var mysql = require("mysql");
+const sequalizeConnection = require("./database/sequalize");
+const Note = sequalizeConnection.models.note;
+const uuid = require("uuid/v1");
 
-//Database connection
-app.use(function(req, res, next) {
-  res.locals.connection = mysql.createConnection({
-    host: "localhost",
-    user: "MyLittleNotes",
-    password: "12345",
-    database: "my-little-notes"
-  });
-  res.locals.connect();
-  next();
-});
-
-let counter = 1;
-
+//TODO ROUTER
 router
-  .get("/", (req, res) => {
+  .get("/", async function(req, res, next) {
+    const notes = await Note.findAll();
     res.status(200).json(notes);
   })
 
-  .post("/", (req, res) => {
+  .post("/", async (req, res) => {
     const { title, body } = req.body;
     const note = {
-      id: counter,
+      id: uuid(),
       title: title,
       body: body
     };
-    notes.push(note);
-    counter++;
-    res.status(201).json({ response: "note created", id: counter });
+    const newNote = await Note.create(note);
+    res.status(200).json(newNote);
   })
 
-  .put("/:id", (req, res) => {
+  .put("/:id", async (req, res) => {
     const { title, body } = req.body;
     const { id } = req.params;
-    const note = notes.find(note => {
-      if (note.id == id) return note;
-    });
-    if (note === undefined) {
+    console.log(req.body);
+    const noteFound = await Note.findOne({ where: { id } });
+    if (noteFound === undefined) {
       res.status(404).json({ response: "ID INVALID" });
       return;
     }
-    const index = notes.indexOf(note);
-    const newNote = {
-      id,
-      title,
-      body
-    };
-    notes.splice(index, 0, newNote);
-    res.status(200).json({ response: "note updated" });
+    const newNote = await noteFound.update({
+      id: id,
+      title: title,
+      body: body
+    });
+    res.status(200).json(newNote);
   })
 
-  .delete("/:id", (req, res) => {
+  .delete("/:id", async (req, res) => {
     const { id } = req.params;
-    const note = notes.find(note => {
-      if (note.id == id) return note;
-    });
-    if (note === undefined) {
+    const noteFound = await Note.findOne({ where: { id } });
+    if (noteFound === undefined) {
       res.status(404).json({ response: "ID INVALID" });
       return;
     }
-    const index = notes.indexOf(note);
-    notes.splice(index, 1);
-    res.status(200).json({ response: "note deleted" });
+    await noteFound.destroy();
+    res.status(200).json({ response: "NOTE DELETED" });
   });
 
 module.exports = router;
