@@ -1,23 +1,36 @@
 window.addEventListener("load", () => {
-  window.addEventListener('online', ()=> console.log('We are online'))
-  window.addEventListener('offline', ()=> console.log('We are offline'))
+  window.addEventListener("online", () => console.log("We are online"));
+  window.addEventListener("offline", () => console.log("We are offline"));
   const notesForm = document.querySelector(".notesForm");
   const addNoteButton = document.querySelector(".add-note");
   const makeNote = note => `
   <form name="" action="/">
         <button class="delete-note" id="btn-${note.id}">X</button>
         <div class="form-inner">
-          <input type="text" placeholder="Note title" id="${note.title}" />
-          <textarea placeholder="Write your note here..." id="${note.body}"
+          <input type="text" id="title-${note.id}" value="${note.title}"></input>
+          <textarea placeholder="Write your note here..." id="body-${note.id}"
             rows="5"
-          ></textarea>
+          >${note.body}</textarea>
         </div>
       </form>
   `;
 
+  function saveNote(id) {
+    const savedText = document.getElementById(`body-${id}`);
+    savedText.addEventListener("focus", () => {
+      interval = setInterval(() => {
+        const title = document.getElementById(`title-${id}`);
+        const data = { title: title.value, body: savedText.value };
+        put(data, id);
+      }, 1000);
+    });
+    savedText.addEventListener("blur", () => {
+      clearInterval(interval);
+    });
+  }
+
   const getNotes = async () => {
     const notesArray = await get();
-    console.log(notesArray);
     notesArray.map(oneNote => createNote(oneNote));
   };
 
@@ -27,6 +40,7 @@ window.addEventListener("load", () => {
     noteNode.innerHTML = makeNote(note);
     notesForm.appendChild(noteNode);
     deleteNote(note.id);
+    saveNote(note.id);
   };
 
   const deleteNote = function(id) {
@@ -50,13 +64,13 @@ window.addEventListener("load", () => {
   //Server petitions
 
   async function get() {
-    const response = await fetch("http://localhost:8080");
+    const response = await fetch("http://localhost:8080/api/notes");
     const notes = await response.json();
     return notes;
   }
 
   async function post() {
-    const response = await fetch("http://localhost:8080", {
+    const response = await fetch("http://localhost:8080/api/notes", {
       body: JSON.stringify({
         title: "",
         body: ""
@@ -65,20 +79,24 @@ window.addEventListener("load", () => {
       headers: { "Content-Type": "application/json" }
     });
     const data = await response.json();
-    return data.note;
+    console.log(data);
+    return data;
+  }
+
+  async function put(data, id) {
+    const response = await fetch(`http://localhost:8080/api/notes/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    return response;
   }
 
   async function deleteFromServer(id) {
-    await fetch(`http://localhost:8080/${id}`, {
+    await fetch(`http://localhost:8080/api/notes/${id}`, {
       method: "DELETE"
     });
   }
 });
-
-// window.onload = () => {
-//   "use strict";
-
-//   if ("serviceWorker" in navigator) {
-//     navigator.serviceWorker.register("./serviceWorker.js");
-//   }
-// };
