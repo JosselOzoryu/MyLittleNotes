@@ -64,9 +64,9 @@ window.addEventListener("load", () => {
   //Server petitions
 
   async function get() {
-      const response = await fetch("http://localhost:8080/api/notes");
-      const notes = await response.json();
-      return notes;
+    const response = await fetch("http://localhost:8080/api/notes");
+    const notes = await response.json();
+    return notes;
   }
 
   async function post() {
@@ -108,7 +108,7 @@ window.addEventListener("load", () => {
         method: "DELETE"
       });
     } else {
-      localStorage.setItem(`req`)
+      localStorage.setItem(`req`);
     }
   }
 });
